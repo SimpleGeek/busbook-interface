@@ -47,6 +47,6 @@
 		<Login/>
 	{:else}
 		<!--<ActionMenu/>-->
-		<RunRoute/>
+		<RunRoute routeId={1}/>
 	{/if}
 </main>
