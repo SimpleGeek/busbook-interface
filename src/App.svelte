@@ -27,6 +27,7 @@
 	import Login from './components/Login.svelte';
 	import ActionMenu from './components/ActionMenu.svelte';
 	import Header from './components/Header.svelte';
+	import RunRoute from './components/RunRoute.svelte';
 
 	let isLoggedIn;
 	let useBigClass;
@@ -45,6 +46,7 @@
 	{#if !isLoggedIn}
 		<Login/>
 	{:else}
-		<ActionMenu/>
+		<!--<ActionMenu/>-->
+		<RunRoute/>
 	{/if}
 </main>
