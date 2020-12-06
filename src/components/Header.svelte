@@ -1,5 +1,6 @@
 <style>
-     /* Add a black background color to the top navigation */
+    /* Begin styling for the nav */
+    /* Add a black background color to the top navigation */
     .topnav {
         background-color: DodgerBlue;
         overflow: hidden;
@@ -22,6 +23,18 @@
         color: black;
     }
 
+    .link-txt {
+        display: inline;
+    }
+
+    @media screen and (max-width: 500px) {
+        .link-txt {
+            display: none;
+        }
+    }
+    /* End styling for the nav */
+
+    /* Begin styling for sign out modal */
     * {box-sizing: border-box}
 
     /* Set a style for all buttons */
@@ -85,13 +98,6 @@
         width: 80%; /* Could be more or less, depending on screen size */
     }
 
-    /* Style the horizontal ruler 
-    hr {
-        border: 1px solid #f1f1f1;
-        margin-bottom: 25px;
-    }
-    */
-
     /* The Modal Close Button (x) */
     .close {
         position: absolute;
@@ -121,6 +127,7 @@
             width: 100%;
         }
     }
+    /* End styling for sign out modal */
 </style>
 
 <script>
@@ -134,10 +141,12 @@
 </script>
 
 <div class="topnav">
-    <a href="#a"><i class="fas fa-home"></i> Home</a>
-    <a href="#a"><i class="fas fa-info"></i> About</a>
-    <a href="#a"><i class="fas fa-question"></i> Help</a>
-    <a href="#a" style="float: right" on:click="{showSignOutModal}"><i class="fas fa-door-open"></i> Sign Out</a>
+    <a href="#a"><i class="fas fa-home"></i> <div class="link-txt">Home</div></a>
+    <a href="#a"><i class="fas fa-info"></i> <div class="link-txt">About</div></a>
+    <a href="#a"><i class="fas fa-question"></i> <div class="link-txt">Help</div></a>
+    <a href="#a" style="float: right" on:click="{showSignOutModal}">
+        <i class="fas fa-door-open"></i> <div class="link-txt">Sign Out</div>
+    </a>
 </div>
 
 <!-- Begin sign out modal -->
