@@ -11,6 +11,10 @@
     color: black;
 }
 
+.hide {
+    display: none;
+}
+
 .btn {
     background-color: DodgerBlue;
     border: none;
@@ -41,6 +45,10 @@
     .single-line-edit {
         width: 80%;
     }
+}
+
+p, h1, h2, h3 {
+    padding-left: 2%;
 }
 
 ul {

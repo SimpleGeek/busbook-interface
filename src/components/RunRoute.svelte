@@ -11,16 +11,21 @@
     
     export let routeId;
     let prevStopSeq = 0;
-    let stop;
+    let stop = {riders: []};
+    let hideAptInfo = true;
 
     async function getStop() {
         const res = await fetch(`http://localhost:8080/api/nextstop?prevStopSeqNum=` + prevStopSeq
                                 + `&routeId=` + routeId);
-        return res.json();
+        stop = await res.json();
+    }
+
+    $: if (stop.apartment != null || stop.building != null || stop.door != null) {
+        hideAptInfo = false;
     }
 
     onMount(async () => {
-        stop = getStop();
+        getStop();
     });
 </script>
 
@@ -28,16 +33,26 @@
     <div class="container">
         {#await stop}
             <h3>Retrieving stop info...</h3>
-        {:then stopJson}
-            {console.log(stopJson)}
-            <h3>We have the stop info!</h3>
+        {:then stop}
+            <h3>{stop.streetAddr}, {stop.city} {stop.zip}</h3>
+            <h3 class:hide={hideAptInfo}>
+                {#if stop.apartment != null}
+                    Apt: {stop.apartment}
+                {/if}
+                {#if stop.building != null}
+                    Bldg: {stop.building}
+                {/if}
+                {#if stop.door != null}
+                    Door: {stop.door}
+                {/if}
+            </h3>
             <ul>
-                {#each stopJson.riders as rider}
-                    <li>{rider.fname} {routeId.lname}</li>
+                {#each stop.riders as rider}
+                    <li>{rider.fname} {rider.lname}</li>
                 {/each}
             </ul>
         {:catch error}
-            {alert(error.message)};
+            <h3>We had an error: {error}</h3>
         {/await}
     </div>
 </main>
