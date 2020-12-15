@@ -36,6 +36,11 @@
 		useBigClass = false;
 		isLoggedIn = true;
 	});
+
+	function handleLogin() {
+		// TODO: This should handle stuff with roles and permissions later
+		isLoggedIn = true;
+	}
 </script>
 
 {#if isLoggedIn}
@@ -44,7 +49,7 @@
 
 <main class="{useBigClass ? 'med-main' : 'small-main'}">
 	{#if !isLoggedIn}
-		<Login/>
+		<Login on:login={handleLogin}/>
 	{:else}
 		<!--<ActionMenu/>-->
 		<RunRoute routeId={1}/>

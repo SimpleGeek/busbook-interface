@@ -11,6 +11,10 @@
     color: black;
 }
 
+.round {
+    border-radius: 50%;
+}
+
 .hide {
     display: none;
 }
@@ -47,13 +51,15 @@
     }
 }
 
-p, h1, h2, h3 {
+p, h1, h2, h3, h4, h5, h6 {
     padding-left: 2%;
+    margin: 0.7%;
 }
 
 ul {
     list-style-type: none;
     padding-left: 1%;
+    padding-right: 1%;
 }
 
 li {
