@@ -114,7 +114,7 @@
                 {/if}
             </h4>
             <ul>
-                {#each stop.riders as rider}
+                {#each stop.riders as rider (rider.riderId)}
                     <li>{rider.fname} {rider.lname}</li>
                 {/each}
             </ul>
