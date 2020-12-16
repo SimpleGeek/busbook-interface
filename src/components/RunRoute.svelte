@@ -53,8 +53,18 @@
 </style>
 
 <script>
+    /*
+     * Before you read any further:
+     * I am deeply ashamed of most of the code in this
+     * component.  I am not a JS developer at the time of
+     * this writing, so many Frankenstein dragons lurk beyond.
+     * Proceed with caution.
+     */
     import { onMount } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
+    import RiderListItem from './RiderListItem.svelte';
     
+    const dispatch = createEventDispatcher();
     export let routeId;
     let prevStopSeq = 0;
     let stop = {riders: []};
@@ -62,6 +72,7 @@
     let hideAptInfo = true;
 
     async function getStop() {
+        ridersPresent = [];
         const res = await fetch(`http://localhost:8080/api/nextstop?prevStopSeqNum=` + prevStopSeq
                                 + `&routeId=` + routeId);
         stop = await res.json();
@@ -87,13 +98,74 @@
     function loadNextStop() {
         prevStopSeq += 1;
         getStop();
+        console.log(stop);
+        if (stop.riders.length == 0) {
+            dispatch('finished', {});
+            alert('Route complete');
+        }
+    }
+
+    // TODO: Write an utility array searching
+    // class that implements a binary search by
+    // sorting on the id value.
+    function getRiderById(id) {
+        let theRider = null;
+        stop.riders.forEach((r, i) => {
+            if (r.riderId == id) {
+                theRider = r;
+            }
+        });
+        return theRider;
+    }
+
+    function isRiderPresent(id) {
+        let isPresent = false;
+        for (let i = 0; i < ridersPresent.length; i++) {
+            let r = ridersPresent[i];
+            if (r.riderId == id) {
+                isPresent = true;
+            }
+        }
+        return isPresent;
+    }
+
+    function updateRiderStatus(isPresent, rider) {
+        if (isPresent) {
+            // The rider is already present, so remove them
+            for (let i = 0; i < ridersPresent.length; i++) {
+                if (ridersPresent[i].riderId == rider.riderId) {
+                    // This clever bit of code sets the position you want
+                    // removed to the last item in the array, then pops
+                    // the last element of the array off.
+                    ridersPresent[i] = ridersPresent[ridersPresent.length - 1];
+                    ridersPresent.pop();
+                    return;
+                }
+            }
+        } else {
+            // The rider is not there, so add them
+            ridersPresent.push(rider);
+        }
+    }
+
+    function handleRiderClicked(event) {
+        let rider = getRiderById(event.detail.id);
+        if (rider != null) {
+            updateRiderStatus(isRiderPresent(rider.riderId), rider);
+        } else {
+            // TODO: Not sure this should ever happen;
+            // if a RiderListItem component forwards an
+            // event with a rider id, that rider should
+            // exist in this stop's list of riders.
+            console.log("Rider #" + event.detail.id + " doesn't exist in our list of riders for stop #" + stop.stopId);
+        }
     }
 </script>
 
 <main>
     <div class="container">
         {#await stop}
-            <h3>Retrieving stop info...</h3>
+            <h4>Retrieving stop info...</h4>
         {:then stop}
             <div class="toolbar">
                 <h4>{stop.streetAddr}, {stop.city} {stop.zip}</h4>
@@ -114,12 +186,22 @@
                 {/if}
             </h4>
             <ul>
-                {#each stop.riders as rider (rider.riderId)}
-                    <li>{rider.fname} {rider.lname}</li>
+                {#each stop.riders as rider}
+                    <!--
+                        I must confess some measure of annoyance with
+                        this implementation.  A custom component to wrap
+                        a list item for the sole purpose of being able to
+                        toggle a CSS class seems a bit extravagant, but I
+                        don't know of another way to do it.  If there's a
+                        way to replace this component with regular list item,
+                        please proceed.  Do keep in mind, though, that this
+                        component is likely used elsewhere.
+                    -->
+                    <RiderListItem rider={rider} on:clicked={handleRiderClicked}/>
                 {/each}
             </ul>
         {:catch error}
-            <h3>We had an error: {error}</h3>
+            <h4 style="color: red">Error: {error}</h4>
         {/await}
         
         <div class="bottom-buttons">

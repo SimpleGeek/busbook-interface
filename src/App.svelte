@@ -37,7 +37,7 @@
 		isLoggedIn = true;
 	});
 
-	function handleLogin() {
+	function handleLogin(event) {
 		// TODO: This should handle stuff with roles and permissions later
 		isLoggedIn = true;
 	}
