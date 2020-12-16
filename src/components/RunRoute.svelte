@@ -96,12 +96,14 @@
     }
 
     function loadNextStop() {
-        prevStopSeq += 1;
-        getStop();
-        console.log(stop);
-        if (stop.riders.length == 0) {
-            dispatch('finished', {});
+        if (stop.lastStop) {
             alert('Route complete');
+            dispatch('navigate', {
+                destination: 'actionmenu'
+            });
+        } else {
+            prevStopSeq += 1;
+            getStop();
         }
     }
 

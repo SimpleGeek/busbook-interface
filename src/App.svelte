@@ -33,7 +33,7 @@
 	let useBigClass;
 
 	onMount(async () => {
-		useBigClass = false;
+		reset();
 		isLoggedIn = true;
 	});
 
@@ -42,15 +42,25 @@
 		isLoggedIn = true;
 	}
 
-	let activeComponent = 'actionmenu';
+	function handleLogout(event) {
+		isLoggedIn = false;
+		reset();
+	}
+
+	let activeComponent;
 
 	function handleNavigate(event) {
 		activeComponent = event.detail.destination;
 	}
+
+	function reset() {
+		activeComponent = 'runroute';
+		useBigClass = false;
+	}
 </script>
 
 {#if isLoggedIn}
-	<Header on:navigate={handleNavigate}/>
+	<Header on:navigate={handleNavigate} on:logout={handleLogout}/>
 {/if}
 
 <main class="{useBigClass ? 'med-main' : 'small-main'}">
@@ -60,10 +70,10 @@
 		{#if activeComponent == 'actionmenu'}
 			<ActionMenu on:navigate={handleNavigate}/>
 		{:else if activeComponent == 'runroute'}
-			<RunRoute routeId={1}/>
+			<RunRoute routeId={1} on:navigate={handleNavigate}/>
 		{:else}
 			<h3 style="color: red">Well this is awkward.  This should never happen...</h3>
-			<h4>Try signing out and restarting.</h4>
+			<h4>Try signing out and restarting your browser.</h4>
 		{/if}
 	{/if}
 </main>

@@ -149,6 +149,10 @@
         document.getElementById('modal').style.display = 'block';
     }
 
+    function signOut() {
+        dispatch('logout', {});
+    }
+
     function navigateHome() {
         dispatch('navigate', {
             destination: 'actionmenu'
@@ -175,7 +179,7 @@
   
         <div class="clearfix">
           <button type="button" class="cancelbtn" on:click={hideSignOutModal}>Cancel</button>
-          <button type="button" class="deletebtn">Sign Out</button>
+          <button type="button" class="deletebtn" on:click={signOut}>Sign Out</button>
         </div>
       </div>
     </form>
