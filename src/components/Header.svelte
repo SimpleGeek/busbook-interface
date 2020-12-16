@@ -138,6 +138,9 @@
 </style>
 
 <script>
+    import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
+
     function hideSignOutModal() {
         document.getElementById('modal').style.display = 'none';
     }
@@ -145,10 +148,16 @@
     function showSignOutModal() {
         document.getElementById('modal').style.display = 'block';
     }
+
+    function navigateHome() {
+        dispatch('navigate', {
+            destination: 'actionmenu'
+        });
+    }
 </script>
 
 <div class="topnav">
-    <a href="#a"><i class="fas fa-home"></i> <div class="link-txt">Home</div></a>
+    <a href="#a" on:click={navigateHome}><i class="fas fa-home"></i> <div class="link-txt">Home</div></a>
     <a href="#a"><i class="fas fa-info"></i> <div class="link-txt">About</div></a>
     <a href="#a"><i class="fas fa-question"></i> <div class="link-txt">Help</div></a>
     <a href="#a" style="float: right" on:click="{showSignOutModal}">

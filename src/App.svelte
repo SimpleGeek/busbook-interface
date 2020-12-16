@@ -41,17 +41,29 @@
 		// TODO: This should handle stuff with roles and permissions later
 		isLoggedIn = true;
 	}
+
+	let activeComponent = 'actionmenu';
+
+	function handleNavigate(event) {
+		activeComponent = event.detail.destination;
+	}
 </script>
 
 {#if isLoggedIn}
-	<Header/>
+	<Header on:navigate={handleNavigate}/>
 {/if}
 
 <main class="{useBigClass ? 'med-main' : 'small-main'}">
 	{#if !isLoggedIn}
 		<Login on:login={handleLogin}/>
 	{:else}
-		<!--<ActionMenu/>-->
-		<RunRoute routeId={1}/>
+		{#if activeComponent == 'actionmenu'}
+			<ActionMenu on:navigate={handleNavigate}/>
+		{:else if activeComponent == 'runroute'}
+			<RunRoute routeId={1}/>
+		{:else}
+			<h3 style="color: red">Well this is awkward.  This should never happen...</h3>
+			<h4>Try signing out and restarting.</h4>
+		{/if}
 	{/if}
 </main>
