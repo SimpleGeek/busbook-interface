@@ -123,8 +123,8 @@
     function isRiderPresent(id) {
         let isPresent = false;
         for (let i = 0; i < ridersPresent.length; i++) {
-            let r = ridersPresent[i];
-            if (r.riderId == id) {
+            let riderId = ridersPresent[i];
+            if (riderId == id) {
                 isPresent = true;
             }
         }
@@ -135,7 +135,7 @@
         if (isPresent) {
             // The rider is already present, so remove them
             for (let i = 0; i < ridersPresent.length; i++) {
-                if (ridersPresent[i].riderId == rider.riderId) {
+                if (ridersPresent[i] == rider.riderId) {
                     // This clever bit of code sets the position you want
                     // removed to the last item in the array, then pops
                     // the last element of the array off.
@@ -146,7 +146,7 @@
             }
         } else {
             // The rider is not there, so add them
-            ridersPresent.push(rider);
+            ridersPresent.push(rider.riderId);
         }
     }
 
