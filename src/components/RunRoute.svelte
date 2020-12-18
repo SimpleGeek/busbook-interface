@@ -53,13 +53,6 @@
 </style>
 
 <script>
-    /*
-     * Before you read any further:
-     * I am deeply ashamed of most of the code in this
-     * component.  I am not a JS developer at the time of
-     * this writing, so many Frankenstein dragons lurk beyond.
-     * Proceed with caution.
-     */
     import { onMount } from 'svelte';
     import { createEventDispatcher } from 'svelte';
     import RiderListItem from './RiderListItem.svelte';
@@ -73,9 +66,20 @@
 
     async function getStop() {
         ridersPresent = [];
-        const res = await fetch(`http://localhost:8080/api/nextstop?prevStopSeqNum=` + prevStopSeq
-                                + `&routeId=` + routeId);
+        const res = await fetch('http://localhost:8080/api/nextstop?prevStopSeqNum=' + prevStopSeq
+                                + '&routeId=' + routeId);
         stop = await res.json();
+    }
+
+    function postAttendanceRecords() {
+        if (ridersPresent.length > 0) {
+            fetch('http://localhost:8080/api/updateriderattendance', {
+                method: "POST",
+                body: JSON.stringify(ridersPresent),
+                headers: {"Content-type": "application/json; charset=UTF-8"}
+            }) // TODO: Probably eventually oughta do something with the status of the response...
+            .catch(err => console.log(err));
+        }
     }
 
     $: if (stop.apartment != null || stop.building != null || stop.door != null) {
@@ -96,6 +100,7 @@
     }
 
     function loadNextStop() {
+        postAttendanceRecords();
         if (stop.lastStop) {
             alert('Route complete');
             dispatch('navigate', {
