@@ -50,11 +50,12 @@
 	let activeComponent;
 
 	function handleNavigate(event) {
+		console.log('is this happening: ' + event.detail.destination);
 		activeComponent = event.detail.destination;
 	}
 
 	function reset() {
-		activeComponent = 'runroute';
+		activeComponent = 'actionmenu';
 		useBigClass = false;
 	}
 </script>
