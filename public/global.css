@@ -11,6 +11,40 @@
     color: black;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10%;
+    padding-bottom: 3%;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: row;
+    padding-top: 1%;
+    justify-content: space-between;
+    margin-right: 10%;
+}
+
+.form-section input {
+    padding-right: 10%;
+}
+
+@media all and (max-width: 500px) {
+    .form {
+        padding-left: 3%;
+    }
+
+    .form-section {
+        flex-direction: column;
+        margin-right: 3%;
+    }
+
+    .form-section input {
+        padding-right: 18%;
+    }
+}
+
 .round {
     border-radius: 50%;
 }

@@ -48,7 +48,7 @@
         <ul>
             <li on:click={navigateRunRoute}><i class="fas fa-route"></i> Run Route</li>
             <li><i class="fas fa-user-friends"></i> Go Visiting</li>
-            <li><i class="fas fa-bus"></i> Manage Riders</li>
+            <li><i class="fas fa-bus"></i> Manage Route</li>
             <li><i class="fas fa-scroll"></i> Reports</li>
         </ul>    
     </div>

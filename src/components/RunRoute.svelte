@@ -55,18 +55,18 @@
 <script>
     import { onMount } from 'svelte';
     import { createEventDispatcher } from 'svelte';
+    import { currentRouteSeqNum } from '../util/stores.js';
     import RiderListItem from './RiderListItem.svelte';
     
     const dispatch = createEventDispatcher();
     export let routeId;
-    let prevStopSeq = 0;
     let stop = {riders: []};
     let ridersPresent = [];
     let hideAptInfo = true;
 
     async function getStop() {
         ridersPresent = [];
-        const res = await fetch('http://localhost:8080/api/nextstop?prevStopSeqNum=' + prevStopSeq
+        const res = await fetch('http://localhost:8080/api/nextstop?prevStopSeqNum=' + $currentRouteSeqNum
                                 + '&routeId=' + routeId);
         stop = await res.json();
     }
@@ -91,10 +91,10 @@
     });
 
     function loadPreviousStop() {
-        if (prevStopSeq <= 0) {
+        if ($currentRouteSeqNum <= 0) {
             alert('You are already on the first stop');
         } else {
-            prevStopSeq -= 1;
+            $currentRouteSeqNum -= 1;
             getStop();
         }
     }
@@ -102,12 +102,13 @@
     function loadNextStop() {
         postAttendanceRecords();
         if (stop.lastStop) {
+            $currentRouteSeqNum = 0;
             alert('Route complete');
             dispatch('navigate', {
                 destination: 'actionmenu'
             });
         } else {
-            prevStopSeq += 1;
+            $currentRouteSeqNum += 1;
             getStop();
         }
     }
@@ -167,6 +168,14 @@
             console.log("Rider #" + event.detail.id + " doesn't exist in our list of riders for stop #" + stop.stopId);
         }
     }
+
+    function addStop() {
+        // TODO: Need to do some stuff so we can get
+        // back here when done - probably need a store for this.
+        dispatch('navigate', {
+            destination: 'addstop'
+        });
+    }
 </script>
 
 <main>
@@ -178,7 +187,7 @@
                 <h4>{stop.streetAddr}, {stop.city} {stop.zip}</h4>
                 <div class="toolbar-section">
                     <button class="btn round"><i class="fas fa-pencil-alt"></i></button>
-                    <button class="btn round"><i class="fas fa-plus"></i></button>
+                    <button class="btn round" on:click={addStop}><i class="fas fa-plus"></i></button>
                 </div>
             </div>
             <h4 class:hide={hideAptInfo}>

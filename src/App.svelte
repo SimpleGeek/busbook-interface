@@ -28,6 +28,7 @@
 	import ActionMenu from './components/ActionMenu.svelte';
 	import Header from './components/Header.svelte';
 	import RunRoute from './components/RunRoute.svelte';
+	import AddStop from './components/AddStop.svelte';
 
 	let isLoggedIn;
 	let useBigClass;
@@ -72,6 +73,8 @@
 			<ActionMenu on:navigate={handleNavigate}/>
 		{:else if activeComponent == 'runroute'}
 			<RunRoute routeId={1} on:navigate={handleNavigate}/>
+		{:else if activeComponent == 'addstop'}
+			<AddStop/>
 		{:else}
 			<h3 style="color: red">Well this is awkward.  This should never happen...</h3>
 			<h4>Try signing out and restarting your browser.</h4>
