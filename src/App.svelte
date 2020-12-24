@@ -74,7 +74,7 @@
 		{:else if activeComponent == 'runroute'}
 			<RunRoute routeId={1} on:navigate={handleNavigate}/>
 		{:else if activeComponent == 'addstop'}
-			<AddStop/>
+			<AddStop routeId={1}/>
 		{:else}
 			<h3 style="color: red">Well this is awkward.  This should never happen...</h3>
 			<h4>Try signing out and restarting your browser.</h4>
