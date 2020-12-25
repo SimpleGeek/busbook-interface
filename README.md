@@ -2,6 +2,10 @@
 
 This is the web interface for the Busmaster application.
 
+## Issues
+It is expected that all open issues will be re-evaluated and worked after version
+1.0.0 is released.
+
 ## Hints
 
 ### Fetch RESTful calls

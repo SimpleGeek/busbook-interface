@@ -49,10 +49,29 @@
 	}
 
 	let activeComponent;
+	let callback = null;
 
 	function handleNavigate(event) {
-		console.log('is this happening: ' + event.detail.destination);
-		activeComponent = event.detail.destination;
+		/*
+		 * The general idea here is that the standard destination
+		 * from a navigate event can be overridden when a callback
+		 * has been set by a previous navigation call.  This is useful,
+		 * for example, in the event that a stop is being added from within
+		 * the RunRoute component.  The RunRoute component can set a "callback"
+		 * to point to itself, so that the AddStop component will be redirected
+		 * back to RunRoute once work there is complete.
+		 */
+		if (callback != null) {
+			activeComponent = callback;
+		} else {
+			activeComponent = event.detail.destination;
+		}
+		
+		if (event.detail.hasOwnProperty('callback')) {
+			callback = event.detail.callback;
+		} else {
+			callback = null;
+		}
 	}
 
 	function reset() {
@@ -74,7 +93,7 @@
 		{:else if activeComponent == 'runroute'}
 			<RunRoute routeId={1} on:navigate={handleNavigate}/>
 		{:else if activeComponent == 'addstop'}
-			<AddStop routeId={1}/>
+			<AddStop routeId={1} on:navigate={handleNavigate}/>
 		{:else}
 			<h3 style="color: red">Well this is awkward.  This should never happen...</h3>
 			<h4>Try signing out and restarting your browser.</h4>

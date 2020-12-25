@@ -173,7 +173,8 @@
         // TODO: Need to do some stuff so we can get
         // back here when done - probably need a store for this.
         dispatch('navigate', {
-            destination: 'addstop'
+            destination: 'addstop',
+            callback: 'runroute'
         });
     }
 </script>
