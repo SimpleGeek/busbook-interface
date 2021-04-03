@@ -1,6 +1,6 @@
-# Busmaster
+# BusBook
 
-This is the web interface for the Busmaster application.
+This is the web interface for the BusBook application.
 
 ## Issues
 It is expected that all open issues will be re-evaluated and worked after version
